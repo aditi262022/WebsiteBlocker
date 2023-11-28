@@ -1,6 +1,6 @@
 # WebsiteBlocker
 
-Building a Robust Website Blocker with Python
+Building a Website Blocker with Python
 
 Developed a robust Website Blocker application using Python, employing the Model-View-Controller (MVC) architectural pattern for streamlined organization and modularity. This project leverages platform compatibility, ensuring seamless functionality across various operating systems—Windows, macOS, and Linux—allowing users a versatile experience.
 
