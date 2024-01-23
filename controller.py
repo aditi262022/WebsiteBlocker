@@ -1,3 +1,4 @@
+import datetime
 import time
 from model import WebsiteBlockerModel
 from view import WebsiteBlockerView
@@ -6,6 +7,7 @@ def block_websites():
     model = WebsiteBlockerModel()
     view = WebsiteBlockerView()
     log_file = "blocked_websites_log.txt"
+    
     redirect = "127.0.0.1"
 
     while True:
@@ -35,21 +37,23 @@ def block_websites():
                         host_file.write(redirect + " " + website + "\n")
                         view.log_blocked_websites(log_file, website, "Blocked")
         else:
-            with open(model.host_path, "r+") as host_file:
-                content = host_file.readlines()
-                host_file.seek(0)
+            
+            if current_time > block_schedule["end_time"]:
+                view.display_end_block_message()
+                with open(model.host_path, "r+") as host_file:
+                    content = host_file.readlines()
+                    host_file.seek(0)
 
-                # Remove blocked websites if not within scheduled blocking time
-                for line in content:
-                    if not any(website in line for website in site_block):
-                        host_file.write(line)
-                        view.log_blocked_websites(log_file, line.strip(), "Unblocked")
+                    # Remove blocked websites if not within scheduled blocking time
+                    for line in content:
+                        if not any(website in line for website in site_block):
+                            host_file.write(line)
+                            view.log_blocked_websites(log_file, line.strip(), "Unblocked")
 
-                host_file.truncate()
+                    host_file.truncate()
 
         time.sleep(5)
 
 if __name__ == "__main__":
     block_websites()
 
-#This setup adheres to a more organized MVC pattern, where the Model handles data and logic, the View deals with user interface and output, and the Controller manages the application flow and logic execution.
